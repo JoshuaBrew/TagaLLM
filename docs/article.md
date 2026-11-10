@@ -201,7 +201,7 @@ These stages answer different questions. Each comparison retains its original de
 
 ## The baseline for targeted fine-tuning
 
-The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking. Only 15% of development chats passed all six exchanges.
+The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking.
 
 The next experiment is targeted fine-tuning for missed follow-ups and stale details. A comparison with the current baseline should hold the app configuration fixed and test both versions on fresh conversations. Whether fine-tuning improves state tracking remains an open question.
 
