@@ -54,11 +54,11 @@ During evaluation, the tutor reviewed model-generated conversations, scored the 
 
 ## Training from scratch
 
-With that corpus, we could test whether a small model trained on familiar language and situations would carry those relationships across turns. TinyStories showed that small language models can generate coherent English stories from a deliberately simple synthetic corpus. [5] We borrowed its narrow vocabulary and familiar settings as a design principle. Our task added another demand: respond to a speaker and retain details as the conversation moves on.
+With that corpus, we could test whether a small model could reply naturally in everyday Tagalog and Taglish while keeping track of details across turns.
 
 ### What TinyStories inspired
 
-TinyStories also gave us a starting point for model size. Its results with short English stories showed what models with fewer than 10 million parameters could do in a focused setting. [5] Given the limits of our laptop and the software we used to train on it, we wanted to see whether a model in that size range could handle everyday Tagalog and Taglish conversation while running locally.
+TinyStories showed that models with fewer than 10 million parameters could generate coherent English stories when trained on a deliberately simple synthetic corpus. [5] We followed its approach of using a narrow vocabulary and familiar settings. Given the limits of our laptop and training software, we used that parameter range as a starting point for a model we could train and run locally.
 
 | Parameters | Context | Experiment |
 | --- | --- | --- |
