@@ -13,7 +13,7 @@ Open http://127.0.0.1:8000/. On Linux or macOS, use python3 if python is unavail
 
 ## Exact evaluated chatbot
 
-The evaluated app uses the base Google Gemma 4 E2B instruction model converted to GGUF and quantized as Q4_K_M. The exact file has SHA-256 1b71213c391f309cd3775c2fb489591d5806d2f2e59eccf6400d2b96f42fed47. SEA-LION v4.5 E2B IT Q4_K_M is used internally, with SHA-256 624a18a8cfc3d8ee29752200f73dc02f5007eaac408d94309e8d8da27b2a7ed9. Obtain the classifier from its publisher. The GGUF files embed their tokenizers. The exact Gemma conversion must be obtained or reproduced before this setup can match the evaluated artifacts.
+The evaluated app uses the base Google Gemma 4 E2B instruction model converted to GGUF and quantized as Q4_K_M. The exact file has SHA-256 1b71213c391f309cd3775c2fb489591d5806d2f2e59eccf6400d2b96f42fed47. SEA-LION v4.5 E2B IT Q4_K_M is used internally, with SHA-256 624a18a8cfc3d8ee29752200f73dc02f5007eaac408d94309e8d8da27b2a7ed9. Obtain the classifier from its publisher. The GGUF files embed their tokenizers. Download the [exact evaluated Gemma GGUF](https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B/resolve/main/TagaLLM-Gemma-4-E2B-Q4_K_M.gguf).
 
 Install a Gemma 4 compatible llama.cpp build. Use the commands below in separate terminals with the verified file paths. On Windows, invoke llama-server.exe by its full path if it is not on PATH. Keep the services bound to loopback.
 
