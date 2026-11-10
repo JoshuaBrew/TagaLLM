@@ -32,6 +32,12 @@ The [TagaLLM collection](https://huggingface.co/collections/JoshBrew/tagallm-6af
 
 The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) currently publishes the dataset card and aggregate counts for the redacted candidate. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
 
+## Human-in-the-loop review
+
+A native Tagalog-speaking tutor provided feedback on grammar, phrasing, naturalness, and cultural context in everyday Tagalog and Taglish. The tutor also reviewed model-generated conversations and suggested corrections.
+
+The tutor's review was qualitative and unscored. The development evaluation below reports the quantitative results.
+
 ## Evaluation
 
 In the 20-chat development evaluation, the local Gemma app earned full naturalness marks on 110 of 120 replies and full relevance marks on 67 of 120. It passed 37 of 72 scored state-tracking checks, and three conversations passed all six exchanges. The median reply time on the test machine was 2.16 seconds.
