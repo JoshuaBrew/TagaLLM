@@ -201,7 +201,7 @@ These stages answer different questions. Each comparison retains its original de
 
 ## The baseline for targeted fine-tuning
 
-The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking.
+The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking. The goal now is to keep that natural tone while making the app more dependable across a conversation.
 
 The next experiment is targeted fine-tuning for missed follow-ups and stale details. A comparison with the current baseline should hold the app configuration fixed and test both versions on fresh conversations. Whether fine-tuning improves state tracking remains an open question.
 
