@@ -1,4 +1,5 @@
 """Serve the local portfolio and forward chat to the existing guarded demo."""
+import argparse
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -13,7 +14,7 @@ class PreviewHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
         if self.path != "/chat":
             return self.send_error(404)
-        if self.headers.get("Origin") != "http://127.0.0.1:7866":
+        if self.headers.get("Origin") != f"http://127.0.0.1:{self.server.server_port}":
             return self.send_error(403)
         try:
             length = int(self.headers.get("Content-Length", "0"))
@@ -21,7 +22,7 @@ class PreviewHandler(SimpleHTTPRequestHandler):
             return self.send_error(400)
         if not 0 < length <= 96000:
             return self.send_error(413)
-        request = Request("http://127.0.0.1:7864/chat", self.rfile.read(length),
+        request = Request(f"http://127.0.0.1:{self.server.chat_port}/chat", self.rfile.read(length),
                           {"Content-Type": "application/json"})
         try:
             with urlopen(request, timeout=180) as response:
@@ -37,6 +38,11 @@ class PreviewHandler(SimpleHTTPRequestHandler):
         self.wfile.write(body)
 
 if __name__ == "__main__":
-    with ThreadingHTTPServer(("127.0.0.1", 7866), PreviewHandler) as server:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--port", type=int, default=7866)
+    parser.add_argument("--chat-port", type=int, default=7864)
+    args = parser.parse_args()
+    with ThreadingHTTPServer(("127.0.0.1", args.port), PreviewHandler) as server:
+        server.chat_port = args.chat_port
         server.serve_forever()
 

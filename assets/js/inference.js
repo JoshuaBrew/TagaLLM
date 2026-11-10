@@ -1,8 +1,9 @@
 const inference = (() => {
     const configured = window.TAGALLM_INFERENCE_ORIGIN;
-    const local = ["127.0.0.1", "localhost"].includes(location.hostname);
+    const local = ["127.0.0.1", "localhost"].includes(location.hostname) && location.port !== "8000";
+    if (local) document.getElementById("preview-notice")?.setAttribute("hidden", "");
     const origin = configured ? new URL(configured).origin : local ? location.origin : null;
-    const unavailable = "Hindi pa bukas ang online na modelo. Mababasa pa rin ang research article.";
+    const unavailable = "Preview lang ito. I-download at patakbuhin ang TagaLLM sa computer mo para makipag-chat.";
 
     async function ready() {
         if (!origin) return unavailable;

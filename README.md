@@ -4,20 +4,20 @@ TagaLLM is a research project and chat application for everyday Metro Manila Tag
 
 The project started with small Transformers trained from scratch and custom tokenizers. The current local demo uses Google Gemma 4 E2B in Q4_K_M with a Tagalog system prompt, curated cultural references, and a separate SEA-LION classifier for language and scope checks. The demo uses base Gemma weights. The culture LoRA pilot was a separate experiment.
 
-[Open the demo](https://joshuabrew.github.io/TagaLLM/) · [Read the research article](https://joshuabrew.github.io/TagaLLM/article.html) · [See downloads](https://joshuabrew.github.io/TagaLLM/downloads.html)
+[Open the visual preview](https://joshuabrew.github.io/TagaLLM/) · [Read the research article](https://joshuabrew.github.io/TagaLLM/article.html) · [See downloads](https://joshuabrew.github.io/TagaLLM/downloads.html)
 
 ## Run it locally
 
-The public site previews the standard and React chat interfaces. Chat replies are available through the local Gemma setup. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
+**The GitHub Pages demo is a visual preview only.** GitHub Pages serves the interface without a model backend, so the public demo cannot generate replies. To chat with Gemma, [download the GitHub ZIP](https://github.com/JoshuaBrew/TagaLLM/archive/refs/heads/main.zip) (or clone this repository) and follow the [local installation guide](INSTALL.md#run-the-local-chatbot). The ZIP includes the same chat UI, saved-chat sidebar, and local server code. Download the Gemma weights separately as described in the guide. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
 
 ## Repository layout
 
 | Location | Contents |
 | --- | --- |
-| Root HTML pages | Public entry points for the standard and React demos, research article, evidence, model card, and downloads. |
+| Root HTML pages | Public entry points for the chat preview, research article, evidence, model card, and downloads. |
 | [assets/css/](assets/css/) | Shared styles for the demos and research pages. |
 | [assets/images/](assets/images/) | Demo artwork and the tokenizer comparison chart. |
-| [assets/js/](assets/js/) | Both chat interfaces, conversation history, inference settings, and bundled React libraries. |
+| [assets/js/](assets/js/) | Chat interface, conversation history, and inference settings. |
 | [docs/](docs/) | Markdown edition of the research article. |
 | [local/](local/) | Local web server, chat backend, system prompt, and cultural references. |
 | [tokenizers/](tokenizers/) | The original 2K byte-level BPE and the 4K research tokenizer for the scratch models. Gemma uses its own tokenizer. |
