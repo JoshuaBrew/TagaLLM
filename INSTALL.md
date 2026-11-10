@@ -11,17 +11,16 @@ Install Python 3 and run this from the repository root to browse the research pa
 
 Open http://127.0.0.1:8000/. On Linux or macOS, use python3 if python is unavailable. Live local chat needs the services below.
 
-## Exact evaluated chatbot
+## Run the local chatbot
 
-The evaluated app uses the base Google Gemma 4 E2B instruction model converted to GGUF and quantized as Q4_K_M. The exact file has SHA-256 1b71213c391f309cd3775c2fb489591d5806d2f2e59eccf6400d2b96f42fed47. SEA-LION v4.5 E2B IT Q4_K_M is used internally, with SHA-256 624a18a8cfc3d8ee29752200f73dc02f5007eaac408d94309e8d8da27b2a7ed9. Obtain the classifier from its publisher. The GGUF files embed their tokenizers. Download the [exact evaluated Gemma GGUF](https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B/resolve/main/TagaLLM-Gemma-4-E2B-Q4_K_M.gguf).
+Download the [evaluated Gemma 4 E2B Q4_K_M GGUF](https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B/resolve/main/TagaLLM-Gemma-4-E2B-Q4_K_M.gguf). The 3.43 GB file includes its tokenizer. Its SHA-256 is `1b71213c391f309cd3775c2fb489591d5806d2f2e59eccf6400d2b96f42fed47`.
 
-Install a Gemma 4 compatible llama.cpp build. Use the commands below in separate terminals with the verified file paths. On Windows, invoke llama-server.exe by its full path if it is not on PATH. Keep the services bound to loopback.
+Install a Gemma 4 compatible [llama.cpp build](https://github.com/ggml-org/llama.cpp). Run each command in a separate terminal from the repository root. Replace the GGUF path with your downloaded file. On Windows, use the full path to llama-server.exe if it is not on PATH.
 
-    llama-server --model "PATH-TO-SEA-LION.gguf" --host 127.0.0.1 --port 19462 --ctx-size 4096 --parallel 1 --threads 6 --n-gpu-layers 0 --reasoning off --alias TagaLLM
     llama-server --model "PATH-TO-GEMMA.gguf" --host 127.0.0.1 --port 19468 --ctx-size 4096 --parallel 1 --threads 4 --n-gpu-layers 0 --reasoning off --alias TagaLLM
-    python -X utf8 local/tagallm_local_chat.py --port 7864 --backend-port 19468 --scope-port 19462 --scope-guard --language-guard --system-prompt local/system-prompt.txt --culture-references local/tagallm-culture-references.json
+    python -X utf8 local/tagallm_local_chat.py --port 7864 --backend-port 19468 --system-prompt local/system-prompt.txt --culture-references local/tagallm-culture-references.json
     python -X utf8 local/serve.py
 
-Open http://127.0.0.1:7866/ and try “Sino si Alex Eala?” Check ports 19462 and 19468 at /health if the model is unavailable. Close conflicting local services or reuse the existing evaluated processes. The two GGUF files need about 6.9 GB of storage combined. Both model processes used about 3.8 GiB combined resident memory in a local Windows snapshot. Allow additional memory for runtime buffers, other applications and the OS.
+Open http://127.0.0.1:7866/ and try “Sino si Alex Eala?” If the model is unavailable, check http://127.0.0.1:19468/health and confirm both Python services are running.
 
-Model and runtime sources: [Google Gemma 4 E2B](https://huggingface.co/google/gemma-4-E2B-it), [AI Singapore classifier](https://huggingface.co/aisingapore/Gemma-SEA-LION-v4.5-E2B-IT-GGUF), [llama.cpp](https://github.com/ggml-org/llama.cpp).
+The research evaluation used a separate SEA-LION classifier for language and scope checks. The setup above runs the UI with Gemma alone, so it does not reproduce those checks. See the [evaluation evidence](evidence.html) for details.
