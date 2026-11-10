@@ -24,8 +24,8 @@
 <li><a href="https://huggingface.co/JoshBrew/TagaLLM-15.5M-256">TagaLLM 15.5M-256</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-15.5M-256/resolve/main/model.safetensors">download weights</a></li>
 <li><a href="https://huggingface.co/JoshBrew/TagaLLM-15.52M-512">TagaLLM 15.52M-512</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-15.52M-512/resolve/main/model.safetensors">download weights</a></li>
 </ul>
-<p><a href="https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset">Dataset card and release files on Hugging Face</a>. <a href="evidence.html#source-audit">Dataset provenance and historical split information</a>.</p>
+<p><a href="https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset">Dataset card on Hugging Face</a>. <a href="evidence.html#source-audit">Dataset provenance and historical split information</a>. The redacted candidate is documented there. Dialogue files are not listed on the public Hugging Face main branch.</p>
 <h2>Application architecture</h2>
-<ol><li>GitHub Pages serves the custom UI and saves conversation history in the visitor's browser.</li><li>An optional HTTPS gateway forwards the current conversation to the guarded local service.</li><li>SEA-LION checks language and scope. Gemma 4 E2B generates the conversational answer using Tagalog instructions and relevant cultural references.</li><li>The service returns the reply to the UI.</li></ol>
+<ol><li>GitHub Pages serves the custom UI and saves conversation history in the visitor's browser.</li><li>For local chat, the UI forwards the current conversation to the local Gemma service.</li><li>Gemma 4 E2B generates the answer using Tagalog instructions and relevant cultural references. The evaluated research setup also used SEA-LION for language and scope checks.</li><li>The service returns the reply to the UI.</li></ol>
 </main>
 </html>

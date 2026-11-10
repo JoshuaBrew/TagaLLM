@@ -8,7 +8,7 @@ The project started with small Transformers trained from scratch and custom toke
 
 ## Run it locally
 
-The public site shows the standard and React chat interfaces. Generating replies requires the local inference backend. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
+The public site previews the standard and React chat interfaces. Chat replies are available through the local Gemma setup. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
 
 ## Repository layout
 
@@ -30,7 +30,7 @@ The [TagaLLM collection](https://huggingface.co/collections/JoshBrew/tagallm-6af
 - [TagaLLM 3.75M](https://huggingface.co/JoshBrew/TagaLLM-3.75M-256) and [TagaLLM 15.5M](https://huggingface.co/JoshBrew/TagaLLM-15.5M-256) with 256-token contexts.
 - [TagaLLM 15.52M](https://huggingface.co/JoshBrew/TagaLLM-15.52M-512) with a 512-token context.
 
-The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) is the reference for the redacted dataset and its release files. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
+The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) currently publishes the dataset card and aggregate counts for the redacted candidate. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
 
 ## Evaluation
 
