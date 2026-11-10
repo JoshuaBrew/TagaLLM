@@ -48,9 +48,9 @@ The frozen snapshot includes original synthetic dialogues, dialogue drafts gener
 
 ## Human-in-the-loop review
 
-Before training, a native Tagalog-speaking tutor helped assess the quality of prompts and example assistant replies in the training data. The tutor checked whether they fit everyday Tagalog and Taglish and gave feedback on grammar, phrasing, naturalness, and cultural context.
+A native Tagalog-speaking tutor reviewed selected prompts prepared for fine-tuning, checking whether the grammar and phrasing were appropriate for everyday Metro Manila Tagalog.
 
-During evaluation, the tutor reviewed model-generated conversations, scored the quality of the answers with AI assistance, and suggested corrections.
+The tutor also reviewed model-generated replies for grammatical accuracy and naturalness in Metro Manila Tagalog. AI assisted both reviews, and the tutor brought native-speaker judgment to the language checks.
 
 ## Training from scratch
 
@@ -62,7 +62,7 @@ With that corpus, we could test whether a small model trained on familiar langua
 | About 15.5M | 256 | Dialogue-only and prose followed by dialogue |
 | 15.52M | 512 | Longer context, revised tokenization, and targeted supervision |
 
-The frozen 256-token corpus contains 6,142 training conversations and 815 validation conversations. The prose-first arm also used 84 training passages before dialogue training. The [checkpoint and dataset inventory](../evidence.html#frozen-splits) records the matching snapshots.
+The frozen 256-token corpus contains 6,142 training conversations and 815 validation conversations. The prose-first arm also used 84 training passages before dialogue training. After three epochs on the same dialogue data, validation loss was 2.633 for the 3.75M dialogue-only model and 2.436 for the 15.5M dialogue-only model. The third epoch took about 7 minutes for the smaller model and 18 minutes for the larger one on the same machine. The [checkpoint and dataset inventory](../evidence.html#frozen-splits) records the matching snapshots.
 
 Better scores on isolated tasks did not yield complete conversations. In a matched 512-token breadth experiment, validation loss fell from 2.996 to 2.974, but neither arm completed a six-exchange chat. A later copy-supervision experiment improved correct fact ranking from 9 of 22 to 12 of 22, yet both variants completed 0 of 8 live chats. A fact pair counted as correct only if the model scored the matching supplied reply above the alternative in both versions of the dialogue, using mean log probability per reply token. The model still confused Jun with Jomar and missed a 6:25 pickup when the relevant details were visible in context.
 
@@ -99,8 +99,6 @@ We fine-tuned Gemma 4 E2B with a LoRA adapter to test whether it could better an
 
 In the TV pilot, base Gemma and the fine-tuned model each fully answered 33.3% of final requests. The app using base Gemma with cultural references fully answered 66.7%. Based on those results, we chose base Gemma with cultural references for the local demo.
 
-In one complete conversation, the Gemma app recalled the revised 9:35 story-reading start time after intervening details. The early Qwen scheduling failure and this later Gemma success illustrate the project’s progression across different tasks and setups.
-
 Across the 120 logged replies in the reference-enabled E2B development run, the local app took a median of 2.16 seconds per reply. The 95th percentile was 3.03 seconds. These timings come from the guarded development endpoint on the test machine.
 
 Gemma scored higher on all three axes, though most conversations still fell short of a complete pass. We chose the reference-enabled app as our local development baseline. The runs compared different configurations, so the scores reflect the combined effects of the model, prompts, references, and routing.
@@ -114,7 +112,7 @@ Gemma scored higher on all three axes, though most conversations still fell shor
 | Full state-tracking marks | 44.4% | 51.4% |
 | Complete six-exchange chats | 5% | 15% |
 
-Development evaluation: 20 six-exchange conversations per configuration, with 120 replies and 72 rated state-tracking checks per configuration. Reviewers scored the runs separately without blinding. The results describe a small sample. [Original counts](../evidence.html#sea-lion-gemma-counts)
+Development evaluation: 20 six-exchange conversations per configuration, with 120 replies and 72 rated state-tracking checks per configuration. The runs were scored separately without blinding. A complete pass required six nonempty replies and full marks on every applicable check. For runs outside the local app, each reply also had to finish normally. The results describe a small sample. [Original counts](../evidence.html#sea-lion-gemma-counts)
 
 ### Filipino culture in the app
 
@@ -203,7 +201,7 @@ These stages answer different questions. Each comparison retains its original de
 
 ## The baseline for targeted fine-tuning
 
-Can a small, locally running model sustain natural Tagalog conversation while preserving details across turns? The Gemma app showed that it can in individual cases, including the revised 9:35 start, but it did so inconsistently. The evaluated application produced natural-sounding Tagalog more consistently than it maintained conversational state.
+The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking. Only three of the 20 development chats passed all six exchanges.
 
 The next experiment is targeted fine-tuning for missed follow-ups and stale details. A comparison with the current baseline should hold the app configuration fixed and test both versions on fresh conversations. Whether fine-tuning improves state tracking remains an open question.
 
