@@ -30,7 +30,7 @@ The [TagaLLM collection](https://huggingface.co/collections/JoshBrew/tagallm-6af
 - [TagaLLM 3.75M](https://huggingface.co/JoshBrew/TagaLLM-3.75M-256) and [TagaLLM 15.5M](https://huggingface.co/JoshBrew/TagaLLM-15.5M-256) with 256-token contexts.
 - [TagaLLM 15.52M](https://huggingface.co/JoshBrew/TagaLLM-15.52M-512) with a 512-token context.
 
-The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) currently publishes the dataset card and aggregate counts for the redacted candidate. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
+The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) currently publishes the dataset card and aggregate counts for the redacted candidate. A native Tagalog speaker reviewed selected dataset examples for grammatical accuracy, natural phrasing, and fit with everyday Metro Manila Tagalog. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
 
 ## Human-in-the-loop review
 
