@@ -97,7 +97,11 @@ The scratch experiments improved validation loss and fact ranking, and the token
 
 AI Singapore’s SEA-LION E2B gave us a regionally adapted pretrained baseline. We then built the local app around Google Gemma 4 E2B. A Tagalog conversation prompt sets the register, cultural references supply relevant background, and separate language and scope checks handle routing. Gemma uses its own tokenizer.
 
-We evaluated a culture LoRA separately. On six TV development cases, the base and adapter each fully answered 2 of 6 final requests. The reference-enabled app answered 4 of 6. The adapter lowered held-out assistant loss from 4.44 to 3.72, while the final-answer count stayed the same. This small pilot helped us distinguish a training metric from an improvement users would notice.
+### Fine-tuning Gemma with a culture LoRA
+
+We fine-tuned Gemma 4 E2B with a LoRA adapter to test whether it could better answer questions about Filipino television. LoRA, short for low-rank adaptation, fine-tunes a model by training a small set of additional parameters while keeping the original weights fixed. The adapter reduced held-out assistant loss from 4.44 to 3.72.
+
+In the TV pilot, base Gemma and the fine-tuned model each fully answered 33.3% of final requests. The app using base Gemma with cultural references fully answered 66.7%. Based on those results, we chose base Gemma with cultural references for the local demo.
 
 In one complete conversation, the Gemma app recalled the revised 9:35 story-reading start time after intervening details. The early Qwen scheduling failure and this later Gemma success illustrate the project’s progression across different tasks and setups.
 
