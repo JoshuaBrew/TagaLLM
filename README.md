@@ -24,7 +24,7 @@ The public site shows the standard and React chat interfaces. Generating replies
 
 ## Models and dataset
 
-Model weights and model cards are on Hugging Face.
+The [TagaLLM collection](https://huggingface.co/collections/JoshBrew/tagallm-6af280345e2e4ff6235630ea) groups the four model repositories and dataset card in one place. GitHub contains the application code, setup instructions, and research write-up. Hugging Face contains the downloadable model weights and their cards.
 
 - [Gemma 4 E2B Q4_K_M](https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B) for the local demo.
 - [TagaLLM 3.75M](https://huggingface.co/JoshBrew/TagaLLM-3.75M-256) and [TagaLLM 15.5M](https://huggingface.co/JoshBrew/TagaLLM-15.5M-256) with 256-token contexts.
