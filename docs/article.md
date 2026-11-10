@@ -48,9 +48,9 @@ The frozen snapshot includes original synthetic dialogues, dialogue drafts gener
 
 ## Human-in-the-loop review
 
-A native Tagalog-speaking tutor provided feedback on grammar, phrasing, naturalness, and cultural context in everyday Tagalog and Taglish. The tutor also reviewed model-generated conversations and suggested corrections.
+Before training, a native Tagalog-speaking tutor helped assess the quality of prompts and example assistant replies in the training data. The tutor checked whether they fit everyday Tagalog and Taglish and gave feedback on grammar, phrasing, naturalness, and cultural context.
 
-This review was qualitative and unscored. The article reports the scored development evaluations separately.
+During evaluation, the tutor reviewed model-generated conversations, scored the quality of the answers with AI assistance, and suggested corrections.
 
 ## Training from scratch
 
