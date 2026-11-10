@@ -112,7 +112,7 @@ Gemma scored higher on all three axes, though most conversations still fell shor
 | Full state-tracking marks | 44.4% | 51.4% |
 | Complete six-exchange chats | 5% | 15% |
 
-Development evaluation: 20 six-exchange conversations per configuration, with 120 replies and 72 rated state-tracking checks per configuration. The runs were scored separately without blinding. A complete pass required six nonempty replies and full marks on every applicable check. For runs outside the local app, each reply also had to finish normally. The results describe a small sample. [Original counts](../evidence.html#sea-lion-gemma-counts)
+Development evaluation: 20 six-exchange conversations per configuration, with 120 replies and 72 rated state-tracking checks per configuration. The runs were scored separately without blinding. A complete pass required six nonempty replies and full marks on every applicable check. For runs outside the local app, each reply also had to finish normally. The results describe a small sample. [Evaluation details](../evidence.html#sea-lion-gemma-counts)
 
 ### Filipino culture in the app
 
@@ -150,7 +150,7 @@ FRESH6_01, exchange 6.
 
 ### Full story-reading transcript
 
-Saved development case FRESH6_06, one of three full passes in the 20-case run.
+Saved development case FRESH6_06. This conversation passed the full editorial rubric.
 
 **Exchange 1**
 
@@ -201,7 +201,7 @@ These stages answer different questions. Each comparison retains its original de
 
 ## The baseline for targeted fine-tuning
 
-The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking. Only three of the 20 development chats passed all six exchanges.
+The Gemma app earned full naturalness marks more often than full marks for relevance or state tracking. Only 15% of development chats passed all six exchanges.
 
 The next experiment is targeted fine-tuning for missed follow-ups and stale details. A comparison with the current baseline should hold the app configuration fixed and test both versions on fresh conversations. Whether fine-tuning improves state tracking remains an open question.
 
