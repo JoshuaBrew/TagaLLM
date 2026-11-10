@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 655 258" role="img" aria-labelledby="title desc">
+<title id="title">Final prompts that fit in 256 tokens</title>
+<desc id="desc">Original 2K: 316. Refit 2K: 589. 4K: 673. 8K: 701. All counts are out of 721 held-out chats.</desc>
+<rect width="655" height="258" rx="16" fill="#fffdf6"/>
+<g fill="#192d30" font-family="system-ui, sans-serif" font-size="14">
+<text x="26" y="38" font-size="22" font-weight="700">Final prompts that fit in 256 tokens</text>
+<text x="26" y="62">721 held-out six-exchange chats, with 40 tokens reserved for the answer</text>
+<text x="26" y="103">Original 2K</text><rect x="150" y="89" width="360" height="18" rx="4" fill="#e5eeeb"/><rect x="150" y="89" width="157.8" height="18" rx="4" fill="#075f59"/><text x="527" y="103">43.8%</text><text x="26" y="139">Refit 2K</text><rect x="150" y="125" width="360" height="18" rx="4" fill="#e5eeeb"/><rect x="150" y="125" width="294.1" height="18" rx="4" fill="#075f59"/><text x="527" y="139">81.7%</text><text x="26" y="175">4K</text><rect x="150" y="161" width="360" height="18" rx="4" fill="#e5eeeb"/><rect x="150" y="161" width="336.0" height="18" rx="4" fill="#075f59"/><text x="527" y="175">93.3%</text><text x="26" y="211">8K</text><rect x="150" y="197" width="360" height="18" rx="4" fill="#e5eeeb"/><rect x="150" y="197" width="350.0" height="18" rx="4" fill="#075f59"/><text x="527" y="211">97.2%</text>
+</g></svg>
