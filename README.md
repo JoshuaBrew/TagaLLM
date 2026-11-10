@@ -1,49 +1,39 @@
----
-language:
-- tl
-pipeline_tag: text-generation
-tags:
-- tagalog
-- taglish
-- conversational
-- research
----
-
 # TagaLLM
 
-TagaLLM is a local chat app for everyday Metro Manila Tagalog and Taglish. It is designed for short conversations about family, food, errands, Filipino culture, and changing plans.
+TagaLLM is a research project and chat application for everyday Metro Manila Tagalog and Taglish. It explores how models handle short conversations about daily life and keep track of changes to people, places, and plans.
 
-## Live configuration
+The project started with small Transformers trained from scratch and custom tokenizers. The current local demo uses Google Gemma 4 E2B in Q4_K_M with a Tagalog system prompt, curated cultural references, and a separate SEA-LION classifier for language and scope checks. The demo uses base Gemma weights. The culture LoRA pilot was a separate experiment.
 
-The local demo uses original Google Gemma 4 E2B in Q4 with a Tagalog conversation prompt and a 4,096-token context window. The application adds curated cultural references and uses a separate SEA-LION backend for language and scope checks. The scratch checkpoints and their tokenizer are separate artifacts.
+[Open the demo](https://joshuabrew.github.io/TagaLLM/) · [Read the research article](https://joshuabrew.github.io/TagaLLM/article.html) · [See downloads](https://joshuabrew.github.io/TagaLLM/downloads.html)
 
-The saved adapter training assets pin [Google Gemma 4 E2B IT revision 4adf15748de9e1a0097b6274cee9c15836c41c37](https://huggingface.co/google/gemma-4-E2B-it/tree/4adf15748de9e1a0097b6274cee9c15836c41c37). The live Q4 GGUF matches the launcher SHA-256 1b71213c391f309cd3775c2fb489591d5806d2f2e59eccf6400d2b96f42fed47. [Google’s model card](https://huggingface.co/google/gemma-4-E2B-it) lists Apache 2.0 for upstream Gemma 4.
+## Run it locally
 
-## Fine-tuning and evaluation
+The public site shows the standard and React chat interfaces. Generating replies requires the local inference backend. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
 
-The culture LoRA pilot used 22 reviewed dialogues. Held-out assistant loss fell from 4.44 to 3.72. Base Gemma and the experimental adapter each fully answered 2 of 6 final requests on the TV development set. The app configuration with cultural references fully answered 4 of 6. The live demo uses base Gemma weights.
+## Repository layout
 
-In the separate 20-chat E2B development run, 110 of 120 replies received full naturalness marks, 67 of 120 received full relevance marks, and 37 of 72 scored state checks received full marks. Three conversations passed all six exchanges. These scores come from editorial development review. The model can miss updated people, places, and plans, and short Tagalog inputs can occasionally trigger the language check.
-
-A six-exchange pass requires all six replies to earn 2 out of 2 for naturalness and relevance, plus 2 out of 2 on every applicable state-tracking check. Reviewers record a note when state tracking does not apply. The harness requires a nonempty reply on every turn.
-
-Across the 120 logged replies in the reference-enabled E2B development run, the local app took a median of 2.16 seconds per reply. The 95th percentile was 3.03 seconds. These timings come from the guarded development endpoint on the test machine.
-
-## Research artifacts
-
-| Artifact | Release contents |
+| Location | Contents |
 | --- | --- |
-| Scratch checkpoints | 3.75M and 15.5M at 256 tokens, plus 15.52M at 512 tokens. Pair each checkpoint with its tokenizer and dataset snapshot. |
-| Custom tokenizer | [Original 2K byte-level BPE](original-bpe-2048.json) for the 256-token runs and [4K BPE](bpe_4096.json) for the 512-token copy comparison. The benchmark covers 721 held-out chats. Gemma uses its own tokenizer. |
-| Culture adapter | Experimental LoRA, pinned base revision, training manifest, and matched development outputs. |
-| Data and credits | Identify original, adapted, and third-party data by source, role, split, and redistribution status. |
+| Root HTML pages | Public entry points for the standard and React demos, research article, evidence, model card, and downloads. |
+| [assets/css/](assets/css/) | Shared styles for the demos and research pages. |
+| [assets/images/](assets/images/) | Demo artwork and the tokenizer comparison chart. |
+| [assets/js/](assets/js/) | Both chat interfaces, conversation history, inference settings, and bundled React libraries. |
+| [docs/](docs/) | Markdown edition of the research article. |
+| [local/](local/) | Local web server, chat backend, system prompt, and cultural references. |
+| [tokenizers/](tokenizers/) | The original 2K byte-level BPE and the 4K research tokenizer for the scratch models. Gemma uses its own tokenizer. |
 
-## Historical training datasets
+## Models and dataset
 
-The frozen 256-token snapshot contains 6,142 training conversations and 815 validation conversations. The 15.5M prose-first run also used 84 prose passages. The later 512-token copy comparison used a separately pinned mixture. [Checkpoint and data inventory](evidence.html#frozen-splits)
+Model weights and model cards are on Hugging Face.
 
-The public dataset excludes four Voice of America Learning English source families because redistribution permission for the adaptations could not be independently verified. The earlier public staging export already omitted them. The historical 256-token training snapshot contains all four adaptations. Existing weights and reported results belong to their original runs, and the public dataset is a separate release copy.
+- [Gemma 4 E2B Q4_K_M](https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B) for the local demo.
+- [TagaLLM 3.75M](https://huggingface.co/JoshBrew/TagaLLM-3.75M-256) and [TagaLLM 15.5M](https://huggingface.co/JoshBrew/TagaLLM-15.5M-256) with 256-token contexts.
+- [TagaLLM 15.52M](https://huggingface.co/JoshBrew/TagaLLM-15.52M-512) with a 512-token context.
 
-## Setup
+The [Hugging Face dataset repository](https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset) is the reference for the redacted dataset and its release files. The [research evidence](https://joshuabrew.github.io/TagaLLM/evidence.html#frozen-splits) documents the separately pinned snapshots used for the experiments.
 
-See [local installation](INSTALL.md) and [downloads](downloads.html).
+## Evaluation
+
+In the 20-chat development evaluation, the local Gemma app earned full naturalness marks on 110 of 120 replies and full relevance marks on 67 of 120. It passed 37 of 72 scored state-tracking checks, and three conversations passed all six exchanges. The median reply time on the test machine was 2.16 seconds.
+
+These are results for the local app with prompts and cultural references. See the [model card](https://joshuabrew.github.io/TagaLLM/model-card.html) and [evaluation evidence](https://joshuabrew.github.io/TagaLLM/evidence.html) for the scoring criteria, limitations, and experimental comparisons.

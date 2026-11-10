@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TagaLLM Downloads</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="assets/css/style.css">
 <header><strong>TagaLLM</strong><nav><a href="index.html">Chat demo</a> <a href="article.html">Research article</a> <a href="model-card.html">Model card</a></nav></header>
 <main>
 <h1>Downloads and installation</h1>
@@ -16,14 +16,14 @@
 </ul>
 <h2>Research artifacts</h2>
 <p><a href="https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B">TagaLLM Gemma 4 E2B model card</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-Gemma-4-E2B/resolve/main/TagaLLM-Gemma-4-E2B-Q4_K_M.gguf">download Q4_K_M GGUF</a> (3.43 GB).</p>
-<p><a href="original-bpe-2048.json">Original 2K tokenizer</a> and <a href="bpe_4096.json">4K research tokenizer</a>.</p>
+<p><a href="tokenizers/original-bpe-2048.json">Original 2K tokenizer</a> and <a href="tokenizers/bpe_4096.json">4K research tokenizer</a>.</p>
 <p><a href="evidence.html#checkpoints">Scratch checkpoint inventory and hashes</a>.</p>
 <ul>
 <li><a href="https://huggingface.co/JoshBrew/TagaLLM-3.75M-256">TagaLLM 3.75M-256</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-3.75M-256/resolve/main/model.safetensors">download weights</a></li>
 <li><a href="https://huggingface.co/JoshBrew/TagaLLM-15.5M-256">TagaLLM 15.5M-256</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-15.5M-256/resolve/main/model.safetensors">download weights</a></li>
 <li><a href="https://huggingface.co/JoshBrew/TagaLLM-15.52M-512">TagaLLM 15.52M-512</a> · <a href="https://huggingface.co/JoshBrew/TagaLLM-15.52M-512/resolve/main/model.safetensors">download weights</a></li>
 </ul>
-<p>The dialogue dataset is held pending generation-provider clearance. <a href="https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset">Hugging Face dataset card</a> (documentation only). <a href="evidence.html#source-audit">Dataset provenance and historical split information</a>.</p>
+<p><a href="https://huggingface.co/datasets/JoshBrew/TagaLLM-Dataset">Dataset card and release files on Hugging Face</a>. <a href="evidence.html#source-audit">Dataset provenance and historical split information</a>.</p>
 <h2>Application architecture</h2>
 <ol><li>GitHub Pages serves the custom UI and saves conversation history in the visitor's browser.</li><li>An optional HTTPS gateway forwards the current conversation to the guarded local service.</li><li>SEA-LION checks language and scope. Gemma 4 E2B generates the conversational answer using Tagalog instructions and relevant cultural references.</li><li>The service returns the reply to the UI.</li></ol>
 </main>
