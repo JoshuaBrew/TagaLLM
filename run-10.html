@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TagaLLM Run 10</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<style>.research{max-width:850px}.research section{margin-bottom:34px}.research .article-hero{margin-bottom:26px}.research .article-hero h1{font-size:clamp(2.1rem,5vw,3.6rem)}.research figure{margin:18px 0}.research .chart div{grid-template-columns:minmax(6rem,9rem) minmax(0,1fr) 5.2rem}.research .timeline{padding:12px 0;border-block:1px solid var(--line);margin-bottom:26px}.research .comparison figure{margin:0}.research section h2{margin-top:0}</style>
+</head>
+<body class="hub">
+<header><strong>✦ TagaLLM</strong><nav aria-label="Research"><a href="article.html">First research article</a><a href="run-10.html" aria-current="page">Run 10 article</a><a href="docs/run-10.md">Markdown</a></nav></header>
+<main class="doc research">
+<section class="hero article-hero"><p class="eyebrow">Research notes · Run 10</p><h1>TagaLLM Run 10</h1><p>Fine-tuning Gemma for Philippine reference questions and Tagalog conversation.</p></section>
+<section>
+<p>TagaLLM is a local assistant for Philippine reference questions and everyday Tagalog and Taglish conversation. We started with unadapted Google Gemma 4 E2B IT, which answered directly on 73.0% of the factual prompts, often fell back to source notes, and lost track of the pickup time in a chair-rental roleplay. Run 9 brought direct answers to 86.5% and showed gains in note synthesis and dialogue state. Run 10 continued training the Run 9 adapter to sharpen factual completeness, alongside changes to the app's retrieval and factual checks.</p>
+</section>
+<section><h2 id="stage-1-base-gemma-vs-run-9-establishing-grounding-memory">Stage 1 — Base Gemma vs. Run 9 (Establishing Grounding &amp; Memory)</h2>
+<p>The overnight Run 9 evaluation replayed the same 37 information prompts and 21 conversation turns against the saved unadapted Google Gemma 4 E2B IT control. Both used the same frozen source snapshot. Run 9 answered directly on 32 of 37 information prompts, up from 27 of 37 for base Gemma. Source-note fallbacks fell from eight to three. Each model also returned one clarification and one no-source reply.</p>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Overnight measure</th>
+<th style="text-align: right;">Base Gemma</th>
+<th style="text-align: right;">Run 9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Direct generated answers</td>
+<td style="text-align: right;">73.0%</td>
+<td style="text-align: right;">86.5%</td>
+</tr>
+<tr>
+<td>Source-note fallbacks</td>
+<td style="text-align: right;">21.6%</td>
+<td style="text-align: right;">8.1%</td>
+</tr>
+<tr>
+<td>Required details matched in five practice scenarios</td>
+<td style="text-align: right;">42.3%</td>
+<td style="text-align: right;">53.8%</td>
+</tr>
+</tbody>
+</table></div>
+<p>Direct-answer counts measure how the app delivered a reply. The practice scores count automated text markers. Editorial review still found factual errors. For example, Run 9 omitted the 709,000-year estimate for Kalinga, while base Gemma preserved it in a source-note fallback. The later Run 10 evaluation used a different prompt set and Run 9 as its control.</p>
+<p>Run 9's training split included 84 grounded answers, 52 conversations, and 34 insufficient-evidence cases.</p>
+<p>Both runs measured assistant-token loss, which tracks how well a checkpoint predicts the expected replies on a held-out split.</p>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Training pass</th>
+<th style="text-align: right;">Start</th>
+<th style="text-align: right;">End</th>
+<th style="text-align: right;">Validation examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base Gemma → Run 9</td>
+<td style="text-align: right;">2.791</td>
+<td style="text-align: right;">0.623</td>
+<td style="text-align: right;">15</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Earlier matched replay — unadapted Gemma and Run 9.</strong> Both saw the same retrieved notes for “Anong petsa bumalik si MacArthur sa Leyte?”</p>
+<blockquote>
+<p><strong>Base Gemma:</strong> Bumalik si Douglas MacArthur sa Pilipinas noong Oktubre 20, 1944, sa Palo, Leyte, ayon sa panandang pangkasaysayan [H4].</p>
+<p><strong>Run 9:</strong> Oktubre 20, 1944 [H4].</p>
+</blockquote>
+<p>Both gave the correct date. Base Gemma added useful context, and Run 9 answered the exact question in fewer words. The source markers were part of that evaluation's output format.</p>
+<p>The pre-fine-tuning baseline also included a chair-rental roleplay. The user had already said they would pick up four chairs on Sunday morning. The final question asked how much money would remain at ₱60 per chair and when pickup would happen.</p>
+<blockquote>
+<p><strong>Base Gemma:</strong> Kung 60 pesos bawat upuan, magkakatapos ka ng 240 pesos. Magkakaroon ka pa rin ng 110 pesos. Kailan mo kukunin?</p>
+<p><strong>Run 9:</strong> Kung 60 pesos bawat upuan, 240 pesos ang gagastusin mo (4 x 60). Magkakaroon ka pa ng 110 pesos na matitira sa budget mo. Kukunin mo pa rin ito sa Linggo ng umaga.</p>
+</blockquote>
+<p>Base Gemma got the ₱110 balance right, used the awkward phrase “magkakatapos ka ng 240 pesos,” and asked again for a pickup time it had already been given. Run 9 stated the cost more clearly and carried Sunday morning forward. This replay shows an improvement in wording and conversational state on the same exchange.</p>
+</section>
+<section><h2 id="stage-2-scaling-to-run-10-sharpening-completeness-library-growth">Stage 2 — Scaling to Run 10 (Sharpening Completeness &amp; Library Growth)</h2>
+<h3 id="what-we-fine-tuned">What we fine-tuned</h3>
+<p>Run 10 built on the adapter trained in Run 9. We nearly doubled the number of training examples, from 170 to 331, and used a learning rate one-fifth as large for the additional pass. Both runs kept the same Gemma base weights frozen and trained the same 5,357,568 adapter parameters.</p>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Training setting</th>
+<th>Run 9</th>
+<th>Run 10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Starting adapter</td>
+<td>Fresh LoRA adapter</td>
+<td>Trained Run 9 adapter</td>
+</tr>
+<tr>
+<td>Learning rate</td>
+<td>0.00010</td>
+<td>0.00002</td>
+</tr>
+<tr>
+<td>Dataset size</td>
+<td>185 examples</td>
+<td>350 examples</td>
+</tr>
+<tr>
+<td>Training / validation</td>
+<td>170 / 15</td>
+<td>331 / 19</td>
+</tr>
+<tr>
+<td>Optimizer steps in one pass</td>
+<td>170</td>
+<td>331</td>
+</tr>
+</tbody>
+</table></div>
+<p>Run 10's expanded dataset included examples built from 156 reference notes, earlier dialogue examples, and tutor feedback. The tokenizer preflight verified assistant-only labels on all 350 examples.</p>
+<p>Both runs used Google Gemma 4 E2B IT at the same revision, CPU training in FP32, and AdamW with zero weight decay. Both applied LoRA to the same 100 attention projections (<code>q_proj</code>, <code>k_proj</code>, <code>v_proj</code>, and <code>o_proj</code>) with rank 16, alpha 16, and zero dropout. Run 10 loaded the Run 9 adapter weights and started a fresh optimizer. We merged the resulting adapter into Gemma and exported it as a Q4_K_M GGUF for llama.cpp.</p>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Training pass</th>
+<th style="text-align: right;">Start</th>
+<th style="text-align: right;">End</th>
+<th style="text-align: right;">Validation examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run 9 → Run 10</td>
+<td style="text-align: right;">1.009</td>
+<td style="text-align: right;">0.700</td>
+<td style="text-align: right;">19</td>
+</tr>
+</tbody>
+</table></div>
+<p>Run 10 improved from <strong>1.009 to 0.700</strong> on its own validation split, with Run 9 as the starting checkpoint. Run 9’s <strong>0.623</strong> came from its earlier, 15-example split. Comparing <strong>0.623</strong> with <strong>0.700</strong> across those splits cannot establish a regression. The answer evaluations below examine factual recall and reply completeness directly.</p>
+<h3 id="growing-the-philippine-source-library">Growing the Philippine source library</h3>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Reference library</th>
+<th style="text-align: right;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run 9 handoff</td>
+<td style="text-align: right;">131</td>
+</tr>
+<tr>
+<td>Run 10 snapshot</td>
+<td style="text-align: right;">156</td>
+</tr>
+<tr>
+<td>Growth</td>
+<td style="text-align: right;">25 notes (19.1%)</td>
+</tr>
+</tbody>
+</table></div>
+<p>The overnight Run 9 handoff cataloged <strong>131 reference notes</strong>. The Run 10 snapshot contained <strong>156</strong>, an increase of <strong>25 notes (19.1%)</strong>. The library is an app resource. At answer time, the app searches its index and passes relevant notes to the model. Run 9 later used the same 156-note index as Run 10, so the lookup comparison gave both checkpoints access to the expanded library. The 12-question recall test disabled lookup for both checkpoints.</p>
+<h3 id="answers-with-lookup">Answers with lookup</h3>
+<p>We manually reviewed all eight factual prompts from the two saved Run 9 and Run 10 lookup replays. The logs recorded matching note IDs on seven prompts. Lookup returned no notes for either run on the Baguio prompt. The replays also contained 11 language and conversation cases, which were outside this factual comparison.</p>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Matched-note replay measure</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run 10 more complete</td>
+<td style="text-align: right;">1 of 7</td>
+</tr>
+<tr>
+<td>Tied on completeness</td>
+<td style="text-align: right;">6 of 7</td>
+</tr>
+<tr>
+<td>Run 10 less complete</td>
+<td style="text-align: right;">0 of 7</td>
+</tr>
+<tr>
+<td>Run 9 direct replies</td>
+<td style="text-align: right;">5 of 7</td>
+</tr>
+<tr>
+<td>Run 10 direct replies</td>
+<td style="text-align: right;">6 of 7</td>
+</tr>
+</tbody>
+</table></div>
+<p>We scored the replies the app displayed, including any source excerpts, by how fully they covered the facts requested in the question. With matching notes, Run 10 was more complete on 1 of 7 prompts (Butuan), tied on 6, and was less complete on 0. The ties included Kalinga, Callao Cave, and the barangay assembly question, where both displayed the requested facts. Both gave the World Heritage listing date and said the Puerto Princesa river flows into the sea. Run 10 added that it flows directly into the sea. For current park status and the disaster-fund percentages, both displayed replies that lacked the requested information.</p>
+<p>Run 10 gave a more complete answer on one question, about the Butuan boats. Asked when the boats were declared a National Cultural Treasure, Run 9 gave the year, 1987. With the same notes, Run 10 gave the full date, March 9, 1987, and cited Proclamation No. 86.</p>
+<p>Run 10 generated direct replies on 6 of the 7 prompts with matching notes, up from 5 for Run 9. Callao Cave accounts for that difference. Both replies displayed the find and its estimated age of 67,000 years, with Run 9 delivering those details in a source excerpt.</p>
+<p><strong>Overnight replay — Run 9 and Run 10.</strong> With the same Puerto Princesa source note, both answered when the underground river entered the World Heritage List and where it flows. These are the replies shown by the app.</p>
+<blockquote>
+<p><strong>Run 9:</strong> Noong Disyembre 4, 1999. Dumadaloy ito sa dagat.</p>
+<p><strong>Run 10:</strong> Noong Disyembre 4, 1999. Dumadaloy nang diretso sa dagat ang ilog sa ilalim ng lupa.</p>
+</blockquote>
+<p>Both answered correctly with the note. Run 10's second sentence makes the subject explicit, so it reads more clearly on its own. Without the note, Run 9 gave the wrong year and Run 10 omitted the date. This example shows why we evaluate the wording of sourced replies separately from factual recall.</p>
+</section>
+<section><h2 id="stage-3-app-guardrails-lookup-disabled-recall">Stage 3 — App Guardrails &amp; Lookup-Disabled Recall</h2>
+<h3 id="recall-without-lookup">Recall without lookup</h3>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Checkpoint</th>
+<th style="text-align: right;">Fully correct</th>
+<th style="text-align: right;">Partial</th>
+<th style="text-align: right;">Missed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run 9</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>Run 10</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">5</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both models answered the same 12 prompts without source notes. An answer received full credit for supplying the requested fact without a material error. Partial answers identified a relevant place, institution, or action but missed a requested detail or added an incorrect one. Both models recalled Manuel Quezon and 1935 for the Commonwealth. Both missed the Butuan declaration date and the two BARMM census figures. This small test showed a tie in recall. It included questions based on notes used in Run 10 training, so it does not measure generalization to unseen facts.</p>
+<h3 id="what-changed-in-the-app">What changed in the app</h3>
+<p>The Baguio and disaster-fund questions exposed problems in lookup. Baguio search initially missed a relevant note, and the RA 10121 disaster-fund query retrieved a general passage without the requested percentages. After improving the search terms, Run 10 answered Baguio directly. It also drafted the correct disaster-fund figures, but the factual check initially required the reply to repeat the law number already supplied in the question. After that check was corrected, the app displayed the direct answer. The post-fix retest used Run 10 alone.</p>
+<p>On a fresh set of five language prompts, both versions accepted Tagalog and Taglish and redirected English, Spanish, and French. Both struggled to respond appropriately to the two “Weh?” examples. The language check runs in the app.</p>
+<p>Run 10 became the local default with lookup available. Run 9 is preserved for comparison.</p>
+<p>Both checkpoints answered 4 of 12 questions fully correctly without lookup. The Baguio and disaster-fund retests showed how much the displayed answer can depend on finding the right note and applying the right factual check. On local hardware, our design uses a 2B-class model fine-tuned for Tagalog and Taglish fluency, note synthesis, and dialogue state. The 156-note retrieval library supplies facts that can be updated as sources change, and deterministic app rules govern which answers the user sees.</p>
+</section>
+<section><h2 id="appendix-on-the-matched-note-replay">Appendix on the matched-note replay</h2>
+<p>We compared how fully each displayed reply covered the facts asked for in the prompt. Source excerpts counted toward coverage. A tie means the two replies covered the same requested facts, including cases where both lacked the requested information. The note IDs below match for both runs in each pair.</p>
+<h3>1. Kalinga evidence</h3>
+<p><strong>Prompt</strong><br>Gaano katanda ang ebidensiya ng pagkatay ng rhinoceros sa Kalinga?</p>
+<p><strong>Notes</strong> H14, P153</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Tinatayang 709,000 taon na ang ebidensiya ng gawain ng mga sinaunang hominin.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Tinatayang 709,000 taon na ang ebidensiya ng gawain ng mga sinaunang hominin.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both gave the requested age estimate of 709,000 years.</p>
+<h3>2. Callao Cave</h3>
+<p><strong>Prompt</strong><br>Ano ang natuklasan sa Callao Cave noong 2007 at gaano katanda ito?</p>
+<p><strong>Notes</strong> H1, H13</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Ito ang nakasaad sa sanggunian:</p>
+<p>Iniulat ng mga mananaliksik ang Homo luzonensis mula sa mga fossil sa Callao Cave sa hilagang Luzon. Ang buto sa paa na natagpuan noong 2007 ay tinatayang 67,000 taon ang edad.</p>
+<p>Nasa bayan ng Peñablanca sa probinsya ng Cagayan ang Callao Caves, malapit sa National Museum Cagayan Valley.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Natuklasan ng mga mananaliksik ang Homo luzonensis sa mga fossil sa Callao Cave sa hilagang Luzon. Ang buto sa paa na natagpuan noong 2007 ay tinatayang 67,000 taon ang edad.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both showed what was found and its estimated age. Run 9 displayed a source excerpt. Run 10 generated the reply directly.</p>
+<h3>3. Butuan declaration</h3>
+<p><strong>Prompt</strong><br>Kailan idineklarang National Cultural Treasure ang mga bangka sa Butuan?</p>
+<p><strong>Notes</strong> H2, H10, P149</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Noong 1987.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Noong Marso 9, 1987, ayon sa Proklamasyon Blg. 86.</p>
+</blockquote>
+<p><strong>Run 10 more complete.</strong> Run 9 gave the year. Run 10 supplied the full date and named the proclamation.</p>
+<h3>4. Puerto Princesa park status</h3>
+<p><strong>Prompt</strong><br>Bukas na ba ngayon ang Puerto Princesa Underground River?</p>
+<p><strong>Notes</strong> P118</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Hindi nakasaad sa tala kung bukas pa ang parke ngayon.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Hindi nakasaad sa tala kung bukas pa ang parke.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both indicated that the retrieved note lacked current opening information.</p>
+<h3>5. Barangay assembly</h3>
+<p><strong>Prompt</strong><br>Sino ang puwedeng maging kasapi ng barangay assembly at gaano kadalas ito nagpupulong?</p>
+<p><strong>Notes</strong> G1, G105</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Ang mga kasapi ng barangay assembly ay mga Pilipinong 15 taong gulang pataas na aktuwal na naninirahan sa barangay nang hindi bababa sa anim na buwan at nakatala sa listahan. Nagpupulong ito nang hindi bababa sa dalawang beses kada taon.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Ang mga Pilipinong 15 taong gulang pataas na aktuwal na naninirahan sa barangay nang hindi bababa sa anim na buwan at nakatala sa listahan ang kasapi. Nagpupulong ito nang hindi bababa sa dalawang beses kada taon.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both gave the membership criteria and minimum meeting frequency.</p>
+<h3>6. Disaster-fund percentages</h3>
+<p><strong>Prompt</strong><br>Sa ilalim ng RA 10121, ilang porsiyento ng regular na kita ang minimum na ilalaan sa lokal na disaster fund at gaano kalaki ang Quick Response Fund?</p>
+<p><strong>Notes</strong> G15</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Ito ang nakasaad sa sanggunian:</p>
+<p>Sa ilalim ng RA 10121, may local disaster risk reduction and management office sa bawat lalawigan, lungsod at munisipyo. May komite para rito sa bawat barangay. Kabilang sa mga tungkulin nila ang pagtukoy sa panganib, paghahanda at pagsasanay, pagpapatakbo ng lokal na sistema ng maagang babala, at pagtugon sa emerhensiya. Ang batas ay hindi bulletin tungkol sa kasalukuyang lagay ng panahon o pagbaha.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Ito ang nakasaad sa sanggunian:</p>
+<p>Sa ilalim ng RA 10121, may local disaster risk reduction and management office sa bawat lalawigan, lungsod at munisipyo. May komite para rito sa bawat barangay. Kabilang sa mga tungkulin nila ang pagtukoy sa panganib, paghahanda at pagsasanay, pagpapatakbo ng lokal na sistema ng maagang babala, at pagtugon sa emerhensiya. Ang batas ay hindi bulletin tungkol sa kasalukuyang lagay ng panahon o pagbaha.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both displayed the same source excerpt, which supplied neither requested percentage.</p>
+<h3>7. Puerto Princesa river</h3>
+<p><strong>Prompt</strong><br>Kailan napabilang sa World Heritage List ang Puerto Princesa Underground River at saan dumadaloy ang ilog?</p>
+<p><strong>Notes</strong> P118</p>
+<p><strong>Run 9</strong></p>
+<blockquote>
+<p>Noong Disyembre 4, 1999. Dumadaloy ito sa dagat.</p>
+</blockquote>
+<p><strong>Run 10</strong></p>
+<blockquote>
+<p>Noong Disyembre 4, 1999. Dumadaloy nang diretso sa dagat ang ilog sa ilalim ng lupa.</p>
+</blockquote>
+<p><strong>Tie.</strong> Both gave the listing date and identified the sea as the destination. Run 10 added that the river flows there directly.</p>
+</section>
+</main>
+</body>
+</html>

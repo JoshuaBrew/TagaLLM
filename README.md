@@ -2,9 +2,15 @@
 
 TagaLLM is a research project and chat application for everyday Metro Manila Tagalog and Taglish. It explores how models handle short conversations about daily life and keep track of changes to people, places, and plans.
 
-The project started with small Transformers trained from scratch and custom tokenizers. The current local demo uses Google Gemma 4 E2B in Q4_K_M with a Tagalog system prompt, curated cultural references, and a separate SEA-LION classifier for language and scope checks. The demo uses base Gemma weights. The culture LoRA pilot was a separate experiment.
+The project started with small Transformers trained from scratch and custom tokenizers. The original local demo uses Google Gemma 4 E2B in Q4_K_M with a Tagalog system prompt, curated cultural references, and a separate SEA-LION classifier for language and scope checks. The demo uses base Gemma weights. The culture LoRA pilot was a separate experiment.
 
 [Open the visual preview](https://joshuabrew.github.io/TagaLLM/) · [Read the research article](https://joshuabrew.github.io/TagaLLM/article.html) · [See downloads](https://joshuabrew.github.io/TagaLLM/downloads.html)
+
+## What's new in Run 10
+
+Run 10 is the default checkpoint in the newer local research app. It builds on the Run 9 adapter for Gemma 4 E2B IT and was evaluated with a library of 156 Philippine reference notes. With lookup disabled, both runs answered 4 of 12 questions fully correctly. With the right notes, Run 10 gave clearer or more complete answers in some cases.
+
+[Read the Run 10 research article](https://joshuabrew.github.io/TagaLLM/run-10.html) for the training details, loss charts, and side-by-side replies. The existing local installation guide below covers the original Gemma demo.
 
 ## Run it locally
 
