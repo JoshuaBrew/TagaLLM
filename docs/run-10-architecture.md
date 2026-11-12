@@ -30,4 +30,4 @@ The factual checks look for specific problems, such as omitted required numbers 
 
 ## Where each part runs
 
-The browser interface, Python backend, reference lookup, and llama.cpp inference run on the user's machine. GitHub hosts the code and launcher. Hugging Face hosts the Run 10 checkpoint. The 156-note reference library is private and is loaded from a local file supplied at launch. [Windows setup](run-10-install.md) · [Run 10 checkpoint](https://huggingface.co/JoshBrew/TagaLLM-Run-10)
+The browser interface, Python backend, reference lookup, and llama.cpp inference run on the user's machine. GitHub hosts the code and launcher. Hugging Face hosts the Run 10 checkpoint. The 156-note reference library is loaded from a local file supplied at launch. [Windows setup](run-10-install.md) · [Run 10 checkpoint](https://huggingface.co/JoshBrew/TagaLLM-Run-10)
