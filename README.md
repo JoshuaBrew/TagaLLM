@@ -14,6 +14,8 @@ Run 10 is the default checkpoint in the newer local research app. It builds on t
 
 ## Run 10 architecture
 
+[Read the architecture and design decisions](docs/run-10-architecture.md).
+
 The local Python backend combines a LoRA-fine-tuned Gemma 4 E2B IT checkpoint with retrieval-augmented generation (RAG). It runs the merged Q4_K_M GGUF through llama.cpp. For reference questions, the backend uses text and keyword matching over a private library of 156 Philippine notes.
 
 ```mermaid
