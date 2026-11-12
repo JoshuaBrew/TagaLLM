@@ -38,7 +38,7 @@ Hugging Face hosts the checkpoint. GitHub hosts the app and launcher. The refere
 
 ## Run it locally
 
-**The GitHub Pages demo is a visual preview only.** GitHub Pages serves the interface without a model backend, so the public demo cannot generate replies. To chat with Gemma, [download the GitHub ZIP](https://github.com/JoshuaBrew/TagaLLM/archive/refs/heads/main.zip) (or clone this repository) and follow the [local installation guide](INSTALL.md#run-the-local-chatbot). The ZIP includes the same chat UI, saved-chat sidebar, and local server code. Download the Gemma weights separately as described in the guide. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
+**The GitHub Pages demo is a visual preview only.** GitHub Pages serves the interface without a model backend, so the public demo cannot generate replies. To chat with Gemma, [download the GitHub ZIP](https://github.com/JoshuaBrew/TagaLLM/archive/refs/heads/main.zip) (or clone this repository) and follow the [local installation guide](docs/install.md#run-the-local-chatbot). The ZIP includes the same chat UI, saved-chat sidebar, and local server code. Download the Gemma weights separately as described in the guide. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](docs/install.md) covers model downloads, dependencies, and startup commands.
 
 ## Repository layout
 
@@ -48,7 +48,7 @@ Hugging Face hosts the checkpoint. GitHub hosts the app and launcher. The refere
 | [assets/css/](assets/css/) | Shared styles for the demos and research pages. |
 | [assets/images/](assets/images/) | Demo artwork and the tokenizer comparison chart. |
 | [assets/js/](assets/js/) | Chat interface, conversation history, and inference settings. |
-| [docs/](docs/) | Markdown edition of the research article. |
+| [docs/](docs/) | Research articles, architecture notes, and installation guides. |
 | [local/](local/) | Local web server, chat backend, system prompt, and cultural references. |
 | [tokenizers/](tokenizers/) | The original 2K byte-level BPE and the 4K research tokenizer for the scratch models. Gemma uses its own tokenizer. |
 
