@@ -12,6 +12,28 @@ Run 10 is the default checkpoint in the newer local research app. It builds on t
 
 [Read the Run 10 research article](https://joshuabrew.github.io/TagaLLM/run-10.html) for the training details, loss charts, and side-by-side replies. See the [Run 10 setup instructions](docs/run-10-install.md) for the Windows launcher and required files. The existing local installation guide below covers the original Gemma demo.
 
+## Run 10 architecture
+
+The local Python backend combines a LoRA-fine-tuned Gemma 4 E2B IT checkpoint with retrieval-augmented generation (RAG). It runs the merged Q4_K_M GGUF through llama.cpp. For reference questions, the backend uses text and keyword matching over a private library of 156 Philippine notes.
+
+```mermaid
+flowchart TD
+    UI["TagaLLM browser chat"] --> Route["Local Python backend: language and intent routing"]
+    Route -->|Casual chat or roleplay| Chat["Run 10 via llama.cpp"]
+    Chat --> Reply["Reply in the browser"]
+    Route -->|Reference question| Search["Search for relevant notes"]
+    Library["Private local library of 156 notes"] --> Search
+    Search -->|No relevant notes| NoSource["Explain the gap in coverage"]
+    Search -->|Relevant notes| Draft["Run 10 drafts an answer with the retrieved notes"]
+    Draft --> Checks["Rule-based checks for required facts and unsupported current-status claims"]
+    Checks -->|Pass| Reply
+    Checks -->|Fail| Excerpt["Show the relevant source excerpt"]
+    NoSource --> Reply
+    Excerpt --> Reply
+```
+
+Hugging Face hosts the checkpoint. GitHub hosts the app and launcher. The reference library stays local, and the launcher reads it from the path passed to `-SourceLibrary`. [Model download](https://huggingface.co/JoshBrew/TagaLLM-Run-10) · [Run 10 setup](docs/run-10-install.md)
+
 ## Run it locally
 
 **The GitHub Pages demo is a visual preview only.** GitHub Pages serves the interface without a model backend, so the public demo cannot generate replies. To chat with Gemma, [download the GitHub ZIP](https://github.com/JoshuaBrew/TagaLLM/archive/refs/heads/main.zip) (or clone this repository) and follow the [local installation guide](INSTALL.md#run-the-local-chatbot). The ZIP includes the same chat UI, saved-chat sidebar, and local server code. Download the Gemma weights separately as described in the guide. The research evaluation used additional SEA-LION language and scope checks. The [installation guide](INSTALL.md) covers model downloads, dependencies, and startup commands.
